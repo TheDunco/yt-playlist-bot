@@ -1,9 +1,10 @@
 import * as functions from "firebase-functions";
+import fetch from "node-fetch";
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-export const helloWorld = functions.https.onRequest((request, response) => {
-  functions.logger.info("Hello logs!", {structuredData: true});
-  response.send("Hello from Firebase!");
+export const youTubeFn = functions.https.onRequest(async (request, response) => {
+  
+  const resp = await fetch('https://www.googleapis.com/youtube/v3/search?key={your_key_here}&channelId={channel_id_here}&part=snippet,id&order=date&maxResults=20')
+  const data = response.json();
+
+  console.log(data);
 });
