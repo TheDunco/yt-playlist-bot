@@ -1,10 +1,18 @@
 import * as functions from "firebase-functions";
 import fetch from "node-fetch";
+import key from "../../key";
 
-export const youTubeFn = functions.https.onRequest(async (request, response) => {
-  
-  const resp = await fetch('https://www.googleapis.com/youtube/v3/search?key={your_key_here}&channelId={channel_id_here}&part=snippet,id&order=date&maxResults=20')
-  const data = response.json();
+const channelIds = ["UCp8OOssjSjGZRVYK6zWbNLg"];
+export const youTubeFn = functions.https.onRequest(
+  async (request, response) => {
+    channelIds.forEach(async (channelId) => {
+      const resp = await fetch(
+        `https://www.googleapis.com/youtube/v3/search?key=${key}&channelId=${channelId}&part=snippet,id&order=date&maxResults=20`
+      );
+      const data = await resp.json();
 
-  console.log(data);
-});
+      console.log(data);
+      functions.logger.log(data);
+    });
+  }
+);
